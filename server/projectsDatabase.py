@@ -1,7 +1,7 @@
 # Import necessary libraries and modules
 from pymongo import MongoClient
 
-import hardwareDB
+import hardwareDatabase
 
 '''
 Structure of Project entry:
@@ -20,9 +20,25 @@ def queryProject(client, projectId):
     pass
 
 # Function to create a new project
-def createProject(client, projectName, projectId, description):
-    # Create a new project in the database
-    pass
+def createProject(db_project, projectName, projectId, description, user):
+    
+    project = {
+        'name': projectName,
+        'projectId': projectId, 
+        'description': description,
+        'hwSets': {'HW1':0, 'HW2':0},
+        'users': [user]
+    }
+
+    p = {'projectId': projectId}
+    f = db_project.find_one(p)
+
+    try:
+        if f['projectId'] == projectId:
+            return {"message": "Project already exists"}                        #project already exists
+    except:
+        db_project.insert_one(project)
+        return {"message": "Project created successfully"}
 
 # Function to add a user to a project
 def addUser(client, projectId, userId):

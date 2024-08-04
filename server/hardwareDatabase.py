@@ -1,5 +1,6 @@
 # Import necessary libraries and modules
 from pymongo import MongoClient
+import hardwareSet
 
 '''
 Structure of Hardware Set entry:
@@ -11,14 +12,21 @@ HardwareSet = {
 '''
 
 # Function to create a new hardware set
-def createHardwareSet(client, hwSetName, initCapacity):
-    # Create a new hardware set in the database
-    pass
+def createHardwareSet(id, hwSetName, initCapacity, hardwareset):
+    hw = {
+        "hwId": id,
+        "hwName": hwSetName,
+        "capacity": initCapacity,
+        "availability": initCapacity
+    }
 
-# Function to query a hardware set by its name
-def queryHardwareSet(client, hwSetName):
-    # Query and return a hardware set from the database
-    pass
+    hardwareset.insert_one(hw)
+
+# Function to query a hardware set by its id
+def queryHardwareSet(id, hardwareset):
+    query = {"hwId": id}
+    f = hardwareset.find_one(query)
+    return f
 
 # Function to update the availability of a hardware set
 def updateAvailability(client, hwSetName, newAvailability):
